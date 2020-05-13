@@ -12,11 +12,14 @@ class TestRunner extends \PHPUnit\TextUI\TestRunner
 {
     public function doRun(Test $suite, array $arguments = [], $exit = true): TestResult
     {
-        if (isset($arguments['totalSlices'], $arguments['currentSlice']) && $suite instanceof TestSuite) {
-            $localArguments = $arguments;
-            $this->handleConfiguration($localArguments);
+        $this->handleConfiguration($arguments);
 
-            TestSuiteSlicer::slice($suite, $localArguments);
+        $filters = (new \ReflectionClass($this))->getMethod('processSuiteFilters');
+        $filters->setAccessible(true);
+        $filters->invoke($this, $suite, $arguments);
+
+        if (isset($arguments['totalSlices'], $arguments['currentSlice']) && $suite instanceof TestSuite) {
+            TestSuiteSlicer::slice($suite, $arguments);
         }
 
         return parent::doRun($suite, $arguments, $exit);

@@ -39,7 +39,7 @@ class TestSuiteSlicer
     private static function extractTestsInSuite(TestSuite $suite) : array
     {
         $extractedTests = [];
-        $suiteItems = $suite->tests();
+        $suiteItems = $suite->getIterator();
 
         foreach ($suiteItems as $item) {
             if ($item instanceof TestSuite) {
