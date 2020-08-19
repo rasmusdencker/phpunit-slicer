@@ -50,4 +50,9 @@ if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
 
 require PHPUNIT_COMPOSER_INSTALL;
 
-Wizaplace\PHPUnit\Slicer\Command::main();
+try{
+  Wizaplace\PHPUnit\Slicer\Command::main();
+}catch(\Exception $e){
+  echo $e->__toString();
+  exit(1);
+}
